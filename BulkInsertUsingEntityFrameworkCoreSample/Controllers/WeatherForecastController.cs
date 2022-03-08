@@ -15,12 +15,14 @@ namespace BulkInsertUsingEntityFrameworkCoreSample.Controllers
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly MySqlDbContext _mySqlDbContext;
         private readonly PostgreSqlDbContext _postgreSqlDbContext;
+        private readonly SqlServerDbContext _sqlServerDbContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, MySqlDbContext mySqlDbContext, PostgreSqlDbContext postgreSqlDbContext)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, MySqlDbContext mySqlDbContext, PostgreSqlDbContext postgreSqlDbContext, SqlServerDbContext sqlServerDbContext)
         {
             _logger = logger;
             _mySqlDbContext = mySqlDbContext;
             _postgreSqlDbContext = postgreSqlDbContext;
+            _sqlServerDbContext = sqlServerDbContext;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -37,6 +39,12 @@ namespace BulkInsertUsingEntityFrameworkCoreSample.Controllers
             _postgreSqlDbContext.IntKeyModels.Add(new IntKeyModel());
             _postgreSqlDbContext.IntKeyModels.Add(new IntKeyModel());
             _postgreSqlDbContext.SaveChanges();
+
+            _sqlServerDbContext.GuidKeyModels.Add(new GuidKeyModel());
+            _sqlServerDbContext.GuidKeyModels.Add(new GuidKeyModel());
+            _sqlServerDbContext.IntKeyModels.Add(new IntKeyModel());
+            _sqlServerDbContext.IntKeyModels.Add(new IntKeyModel());
+            _sqlServerDbContext.SaveChanges();
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
