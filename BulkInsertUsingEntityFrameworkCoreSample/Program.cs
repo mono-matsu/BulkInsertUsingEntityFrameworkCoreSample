@@ -22,6 +22,12 @@ builder.Services.AddDbContextPool<PostgreSqlDbContext>(options =>
     options.UseNpgsql(connectionString, optionsBuilder => optionsBuilder.MinBatchSize(2)).LogTo(Console.WriteLine, LogLevel.Information);
 });
 
+builder.Services.AddDbContextPool<SqlServerDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("SqlServer");
+    options.UseSqlServer(connectionString, optionsBuilder => optionsBuilder.MinBatchSize(2)).LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
