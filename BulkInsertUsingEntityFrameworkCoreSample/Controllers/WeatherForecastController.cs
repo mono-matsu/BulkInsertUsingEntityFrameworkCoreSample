@@ -1,3 +1,4 @@
+using BulkInsertUsingEntityFrameworkCoreSample.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkInsertUsingEntityFrameworkCoreSample.Controllers
@@ -12,15 +13,23 @@ namespace BulkInsertUsingEntityFrameworkCoreSample.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly MySqlDbContext _mySqlDbContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, MySqlDbContext mySqlDbContext)
         {
             _logger = logger;
+            _mySqlDbContext = mySqlDbContext;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            _mySqlDbContext.GuidKeyModels.Add(new GuidKeyModel());
+            _mySqlDbContext.GuidKeyModels.Add(new GuidKeyModel());
+            _mySqlDbContext.IntKeyModels.Add(new IntKeyModel());
+            _mySqlDbContext.IntKeyModels.Add(new IntKeyModel());
+            _mySqlDbContext.SaveChanges();
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
